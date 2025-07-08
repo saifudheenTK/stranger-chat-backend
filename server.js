@@ -3,13 +3,30 @@ import http from "http";
 import { Server } from "socket.io";
 import cors from "cors";
 
+// ✅ 1. Setup express
 const app = express();
-app.use(cors());
+
+// ✅ 2. Setup allowed frontend origin
+const allowedOrigin = "https://stranger-chat-frontend-theta.vercel.app";
+
+// ✅ 3. Enable CORS for your frontend
+app.use(cors({
+  origin: allowedOrigin,
+  credentials: true
+}));
+
+// ✅ 4. Create HTTP server
 const server = http.createServer(app);
+
+// ✅ 5. Create socket.io server with proper CORS
 const io = new Server(server, {
-  cors: { origin: "*" }
+  cors: {
+    origin: allowedOrigin,
+    credentials: true
+  }
 });
 
+// ✅ Now continue with the rest...
 let waitingUsers = [];
 let rooms = {};
 
